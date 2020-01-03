@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'controller.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -22,6 +22,9 @@ class Grid extends StatefulWidget {
 }
 
 class _GridState extends State<Grid> {
+  static int perRow = 30;
+  static int numCells = 600;
+  ValueController valueController =  ValueController(numCells,perRow);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,66 +32,90 @@ class _GridState extends State<Grid> {
             title: Text('path finder'),
           ),
           body:Center(
-            child: Align(
-                alignment: Alignment.bottomCenter,
-                child: Container(
-                height: 1000,
-                width: 1200,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: <Widget>[
-                    for(int i=0;i<40;i++)
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        for(int i=0;i<70;i++)
-                          Cell(),
-                      ],
-                    ),
-                  ],
+            child: Container(
+              width: 800,
+              height: 500,
+              child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Container(
+                  height: 1000,
+                  width: 1200,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: <Widget>[
+                      for(int i=0;i<20;i++)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          for(int j=0;j<30;j++)
+                            Cell(valueController.cellController[i*30 + j]),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
           )
-          // Container(
-          //   color: Colors.orange,
-          //   width: 1100,
-          //   height: 2000,
-          //     child: Align(
-          //           alignment: Alignment.bottomCenter,
-          //           child: GridView.count(
-          //         crossAxisCount: 50,
-          //           children: <Widget>[
-          //             for(int i=0;i<500;i++)
-          //               Cell(),
-          //           ],
-          //       ),
-          //   ),
-          // ),
-      // ),
     );
   }
 }
 
+
 class Cell extends StatefulWidget {
+  CellController cellController;
+  Cell(this.cellController);
   @override
   _CellState createState() => _CellState();
 }
 
 class _CellState extends State<Cell> {
-  @override
-  Widget build(BuildContext context) {
-    Color currColor = Colors.blue;
-    return
-        // borderOnForeground: true,
-         Padding(
-          padding: const EdgeInsets.all(0.5),
-          child: Container(
-        color: currColor,
-        width: 15,
-        height: 15,
-        ),
-        // ),
-         );
+  Future expand() async{
+  widget.cellController.length.value = widget.cellController.length.value +1;
+  widget.cellController.color.value = Colors.blue[900];
+  await wait();
+  // widget.cellController.color.value = Colors.white;
+  widget.cellController.length.value = widget.cellController.length.value -1;
   }
+
+  @override
+  Widget build(BuildContext context){
+    return ValueListenableBuilder(
+      valueListenable: widget.cellController.length,
+      builder: (context,cellLength,child){
+        return GestureDetector(
+          onTap: ()=>{expand()},
+          child: ValueListenableBuilder(
+            valueListenable: widget.cellController.color,
+            builder: (context, cellColor, child){
+                return AnimatedContainer(
+                  duration: Duration(milliseconds: 500),
+                  width: cellLength,
+                  height: cellLength,
+                  decoration: BoxDecoration(
+                 border: Border.all(color: Colors.black),
+                 color: cellColor,
+                   ),
+                );
+            },
+          ),
+        );
+      },
+    );
+  
+  }
+}
+
+
+
+
+
+Future sleepSum(int valueOne, int valueTwo) {
+  return Future.delayed(const Duration(seconds: 1), () => valueOne + valueTwo);
+}
+
+Future wait() {
+  // final milliseconds = lerpDouble(100, 1, speed).toInt();
+  // return Future.delayed(Duration(milliseconds: milliseconds));
+  return Future.delayed(Duration(milliseconds: 1000));
 }
