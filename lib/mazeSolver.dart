@@ -57,13 +57,13 @@ class MazeSolver{
     print(matrix[0][1]);
     print(matrix[0][2]);
 
-    await dfs(0,381,visi);
+    // await dfs(0,381);
     // await bfs(0,398);
   }
-  Future<bool> dfs(int curr,int dest,List<int> visi) async{
+  Future<bool> dfs(int curr,int dest) async{
       visi[curr] = 1;
       if(curr == dest){
-      valueController.cellController[curr].color.value = Colors.green;
+      valueController.cellController[curr].color.value = Colors.red;
       return Future.value(true);
       }
       int i= curr ~/perRow,j = curr%perRow;
@@ -75,26 +75,26 @@ class MazeSolver{
         // print('this');
         if(matrix[curr][0] == 1 && visi[curr-perRow]==0){
           //up
-          if (await dfs((i-1)*perRow+j , dest,visi)){
+          if (await dfs((i-1)*perRow+j , dest)){
             return Future.value(true);
           }
         }
       }
         if(j+1 < perRow && matrix[curr][1] == 1 && visi[i*perRow + j+1] == 0){
           //right..
-          if(await dfs(i*perRow + j+1,dest,visi)){
+          if(await dfs(i*perRow + j+1,dest)){
             return Future.value(true);
           }
         }
         if(i+1 < numRow && matrix[curr][2] == 1 && visi[(i+1)*perRow + j] == 0){
             //down
-         if (await dfs((i+1)*perRow+j , dest,visi)){
+         if (await dfs((i+1)*perRow+j , dest)){
           return Future.value(true);
          }
         }
         if(j-1 >=0 && visi[i*perRow + j-1] == 0 && matrix[curr][3] == 1){
             //left
-            if(await dfs(i*perRow + j-1 , dest , visi)){
+            if(await dfs(i*perRow + j-1 , dest )){
                           return Future.value(true);
             }
         }
@@ -120,6 +120,9 @@ class MazeSolver{
       }
       int i= curr ~/perRow,j = curr%perRow;
       valueController.cellController[curr].color.value = Colors.black;
+      await wait();
+      valueController.cellController[curr].color.value = Colors.white;
+
       if(i > 0 && matrix[curr][0] == 1 && visi[curr-perRow]==0){
           //up
          queue.add(curr-perRow);

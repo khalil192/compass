@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'controller.dart';
 import 'mazeSolver.dart';
 
+//git push origin --set-upstream gh-pages
 void main() => runApp(MyApp());
+
+String searchMethod = "dfs";
 
 class MyApp extends StatelessWidget {
   @override
@@ -29,12 +32,51 @@ class _GridState extends State<Grid> {
   void solveMaze(){
     MazeSolver mazeSolver  = new MazeSolver(valueController);
     mazeSolver.fillCells();
+    switch(searchMethod){
+      case "dfs" :{
+        mazeSolver.dfs(0, 587);
+      }
+      break;
+      case "bfs" :{
+        mazeSolver.bfs(0, 587);
+      }
+      break;
+    }
   }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
           appBar: AppBar(
             title: Text('path finder'),
+            actions: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  DropdownButton<String>(
+                    value: searchMethod,
+                    icon: Icon(Icons.keyboard_arrow_down),
+                    iconSize: 24,
+                    elevation: 16,
+                    style: TextStyle(
+                    color: Colors.deepPurple
+                      ),
+                      onChanged: (String newValue) {
+                                setState(() {
+                                  searchMethod = newValue;
+                                });
+                          },
+                          items: <String>['dfs' , 'bfs']
+                          .map<DropdownMenuItem<String>>((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                          }
+                  ).toList(),
+                  ),
+                ],
+              )
+            ],
           ),
           body:
           Center(
