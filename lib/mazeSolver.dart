@@ -1,110 +1,113 @@
-// import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 
-// import 'controller.dart';
-
-
-// //simply convert the maze into adjacency matrix of 
-// // cells and if the node is currently marked 
-// //then disconnect it from its neighbours..
+import 'controller.dart';
 
 
-// class Matrix{
-//   // ValueController
-//   //first construct the graph with the index value... 
-//   final ValueController valueController;
-//   int numCells,perRow,numRow;
-//   List<List<int>> matrix;
-//   Matrix(this.valueController){
-//     numCells = valueController.numCells;
-//     perRow = valueController.perRow;
-//     numRow = valueController.numCells ~/valueController.perRow;
-//     matrix = new List<List<int>>(numCells);
-//     for(int i=0;i<numCells;i++){
-//       matrix[i] = new List<int>(4);
-//       //for each cell 4 directions ...
-//       //0 for up , 1 for right 2 for west 3 for left
-//       //N - 0 E - 1 W - 2 S- 3 
-//     }
-//   }
-//   Future fillCell(int currIndex) async{
-//       print(currIndex);
-//       int row = currIndex ~/ perRow ,col = currIndex %perRow;
-//        //0 for up , 1 for right 2 for down 3 for left
-//       //N - 0 E - 1 W - 2 S- 3 
-//       for(int i=0;i<4;i++){
-//         matrix[currIndex][i] = 0;
-//       }
-//       if( col > 0  && valueController.cellController[currIndex -1].color.value == Colors.white){
-//            //conditionCheck - left
-//           matrix[currIndex][3] = 1;
-//       }
-//       if(col < perRow-1 && valueController.cellController[currIndex +1].color.value == Colors.white ){
-//           //conditionCheck - right
-//           matrix[currIndex][1] = 1;
-//       }
-//       if( row >=0  && valueController.cellController[currIndex- perRow].color.value == Colors.white){
-//           //conditionCheck - down
-//           matrix[currIndex][2] = 1;
-        
-//       }
-//       if(row < numRow-1  && valueController.cellController[currIndex+ perRow].color.value == Colors.white ){
-//           //conditionCheck - up
-//           matrix[currIndex][0] = 1;
-//       }
-//     }
-//   Future fillMatrix() async{
-//     for(int currIndex=0;currIndex<numCells;currIndex++){
-//       //for each row check if adjacent elements can be 
-//       await fillCell(currIndex);
-//     // now our graph is constructed...
-//     //now solve using simple dfs...
-//   }
-//   }
-//   Future solveDfs()async{
-//     List<int>visi = new List<int> (numCells);
-//    await fillMatrix();
-//     print(matrix);
-//     // for(int i=0;i<numCells;i++){
-//       // visi[i] = 0;
-//     // }
-//     // int /src = 0,dest = 98;
-//     // dfs(src,dest,visi);
-//   }
-//   void dfs(int curr , int dest , List<int>visi) async{
-//       visi[curr] = 1;
-//       valueController.cellController[curr].color.value = Colors.red;
-//       // await wait();
-//       //0 for up , 1 for right 2 for down 3 for left
-//       //N - 0 E - 1 W - 2 S- 3 
-//       print(curr);
-//       int adj =curr - perRow;
-//       if(matrix[curr][0] == 1  && visi[adj] ==0){
-//         dfs(adj,dest, visi);
-//       }
-//       adj = curr + 1;
-//       if(matrix[curr][1] == 1 && visi[adj] == 0){
-//         dfs(adj , dest, visi);
-//       }
-//       adj = curr+perRow;
-//       if(matrix[curr][2] == 1 && visi[adj] == 0){
-//         dfs(adj , dest, visi);
-//       }
-//        adj = curr-1;
-//       if(matrix[curr][3] == 1 && visi[adj] == 0){
-//         dfs(adj , dest, visi);
-//       }
-//       // await wait();
-//     valueController.cellController[curr].color.value = Colors.black;
-//   }
+//simply convert the maze into adjacency matrix of 
+// cells and if the node is currently marked 
+//then disconnect it from its neighbours..
 
-// }
 
-// Future sleepSum(int valueOne, int valueTwo) {
-//   return Future.delayed(const Duration(seconds: 1), () => valueOne + valueTwo);
-// }
+class MazeSolver{
+  // ValueController
+  //first construct the graph with the index value... 
+  final ValueController valueController;
+  int numCells,perRow,numRow;
+  List<List<int>> matrix;
+  List<int>visi;
+  MazeSolver(this.valueController){
+    numCells = valueController.numCells;
+    perRow = valueController.perRow;
+    numRow = valueController.numCells ~/valueController.perRow;
+    matrix = new List<List<int>>(numCells);
+    visi = List<int>(numCells);
+    for(int i=0;i<numCells;i++){
+      visi[i] = 0;
+      matrix[i] = new List<int>(4);
+      for(int j=0;j<4;j++){
+        matrix[i][j] = 0;
+      }
+    }
+  }
+  void fillCells() async{
+    for(int i=0;i<numRow;i++){
+      for(int j=0;j<perRow;j++){
+        int curr = i*perRow + j;
+        if(i-1 >= 0 && valueController.cellController[(i-1)*perRow + j].color.value == Colors.white){
+          //up
+          matrix[i*perRow + j][0] = 1;
+        }
+        if(j+1 < perRow && valueController.cellController[i*perRow + j+1].color.value == Colors.white){
+          //right..
+          matrix[curr][1] = 1;
+        }
+        if(i+1 < numRow && valueController.cellController[(i+1)*perRow + j].color.value == Colors.white){
+            //down
+            matrix[i*perRow + j][2] = 1;
+        }
+        if(j-1 >=0 && valueController.cellController[i*perRow + j-1].color.value == Colors.white){
+            //left
+            matrix[i*perRow + j][3] = 1;
+        }
+      }
+    }
+    print(matrix[0][0]);
+    print(matrix[0][1]);
+    print(matrix[0][2]);
+    await dfs(0,30,visi);
+  }
+  Future<bool> dfs(int curr,int dest,List<int> visi) async{
+      visi[curr] = 1;
+      if(curr == dest){
+      valueController.cellController[curr].color.value = Colors.green;
+      return Future.value(true);
+      }
+      await wait();
+      int i= curr ~/perRow,j = curr%perRow;
+      // print(i.toString() + " hhh"+ j.toString());
+      valueController.cellController[curr].color.value = Colors.black;
+      if(i > 0 ){ 
+        // print('this');
+        if(matrix[curr][0] == 1 && visi[curr-perRow]==0){
+          //up
+          if (await dfs((i-1)*perRow+j , dest,visi)){
+            return Future.value(true);
+          }
+        }
+      }
+        if(j+1 < perRow && matrix[curr][1] == 1 && visi[i*perRow + j+1] == 0){
+          //right..
+          if(await dfs(i*perRow + j+1,dest,visi)){
+            return Future.value(true);
+          }
+        }
+        if(i+1 < numRow && matrix[curr][2] == 1 && visi[(i+1)*perRow + j] == 0){
+            //down
+         if (await dfs((i+1)*perRow+j , dest,visi)){
+          return Future.value(true);
+         }
+        }
+        if(j-1 >=0 && visi[i*perRow + j-1] == 0 && matrix[curr][3] == 1){
+            //left
+            if(await dfs(i*perRow + j-1 , dest , visi)){
+                          return Future.value(true);
+            }
+        }
+        return Future.value(false);
+  }
+}
 
-// Future wait() {
-//   // final milliseconds = lerpDouble(100, 1, speed).toInt();
-//   // return Future.delayed(Duration(milliseconds: milliseconds));
-//   return Future.delayed(Duration(milliseconds: 1000));
-// }
+
+
+
+
+
+Future sleepSum(int valueOne, int valueTwo) {
+  return Future.delayed(const Duration(seconds: 1), () => valueOne + valueTwo);
+}
+
+Future wait() {
+  // final milliseconds = lerpDouble(100, 1, speed).toInt();
+  // return Future.delayed(Duration(milliseconds: milliseconds));
+  return Future.delayed(Duration(milliseconds: 1));
+}

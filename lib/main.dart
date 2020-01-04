@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'controller.dart';
 import 'mazeSolver.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -25,9 +26,9 @@ class _GridState extends State<Grid> {
   static int perRow = 30;
   static int numCells = 600;
   ValueController valueController =  ValueController(numCells,perRow);
-  void SolveMaze(){
-    // Matrix matrixObject = new Matrix(valueController);
-    // matrixObject.solveDfs();
+  void solveMaze(){
+    MazeSolver mazeSolver  = new MazeSolver(valueController);
+    mazeSolver.fillCells();
   }
   @override
   Widget build(BuildContext context) {
@@ -35,7 +36,8 @@ class _GridState extends State<Grid> {
           appBar: AppBar(
             title: Text('path finder'),
           ),
-          body:Center(
+          body:
+          Center(
             child: Container(
               width: 800,
               height: 500,
@@ -62,8 +64,8 @@ class _GridState extends State<Grid> {
             ),
           ),
           floatingActionButton: FloatingActionButton(
-            onPressed: () => {
-                SolveMaze(),
+            onPressed: ()=>{
+                solveMaze(),
             },
           ),
     );
@@ -82,8 +84,7 @@ class _CellState extends State<Cell> {
   Future expand() async{
   widget.cellController.length.value = widget.cellController.length.value +1;
   widget.cellController.color.value = Colors.blue[900];
-  await wait();
-  // print(widget.cellController.index);
+  // await wait();
   // widget.cellController.color.value = Colors.white;
   widget.cellController.length.value = widget.cellController.length.value -1;
   }
@@ -99,7 +100,7 @@ class _CellState extends State<Cell> {
             valueListenable: widget.cellController.color,
             builder: (context, cellColor, child){
                 return AnimatedContainer(
-                  duration: Duration(milliseconds: 500),
+                  duration: Duration(milliseconds: 50),
                   width: cellLength,
                   height: cellLength,
                   decoration: BoxDecoration(
@@ -116,16 +117,3 @@ class _CellState extends State<Cell> {
   }
 }
 
-
-
-
-
-Future sleepSum(int valueOne, int valueTwo) {
-  return Future.delayed(const Duration(seconds: 1), () => valueOne + valueTwo);
-}
-
-Future wait() {
-  // final milliseconds = lerpDouble(100, 1, speed).toInt();
-  // return Future.delayed(Duration(milliseconds: milliseconds));
-  return Future.delayed(Duration(milliseconds: 1000));
-}
