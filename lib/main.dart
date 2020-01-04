@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'controller.dart';
-
+import 'mazeSolver.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -25,6 +25,10 @@ class _GridState extends State<Grid> {
   static int perRow = 30;
   static int numCells = 600;
   ValueController valueController =  ValueController(numCells,perRow);
+  void SolveMaze(){
+    // Matrix matrixObject = new Matrix(valueController);
+    // matrixObject.solveDfs();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,7 +60,12 @@ class _GridState extends State<Grid> {
                 ),
               ),
             ),
-          )
+          ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () => {
+                SolveMaze(),
+            },
+          ),
     );
   }
 }
@@ -74,6 +83,7 @@ class _CellState extends State<Cell> {
   widget.cellController.length.value = widget.cellController.length.value +1;
   widget.cellController.color.value = Colors.blue[900];
   await wait();
+  // print(widget.cellController.index);
   // widget.cellController.color.value = Colors.white;
   widget.cellController.length.value = widget.cellController.length.value -1;
   }
