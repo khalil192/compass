@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 
 import 'controller.dart';
@@ -54,7 +56,9 @@ class MazeSolver{
     print(matrix[0][0]);
     print(matrix[0][1]);
     print(matrix[0][2]);
-    await dfs(0,30,visi);
+
+    await dfs(0,381,visi);
+    // await bfs(0,398);
   }
   Future<bool> dfs(int curr,int dest,List<int> visi) async{
       visi[curr] = 1;
@@ -62,10 +66,11 @@ class MazeSolver{
       valueController.cellController[curr].color.value = Colors.green;
       return Future.value(true);
       }
-      await wait();
       int i= curr ~/perRow,j = curr%perRow;
       // print(i.toString() + " hhh"+ j.toString());
       valueController.cellController[curr].color.value = Colors.black;
+      await wait();
+      valueController.cellController[curr].color.value = Colors.white;
       if(i > 0 ){ 
         // print('this');
         if(matrix[curr][0] == 1 && visi[curr-perRow]==0){
@@ -93,8 +98,46 @@ class MazeSolver{
                           return Future.value(true);
             }
         }
+        valueController.cellController[curr].color.value = Colors.orange;
         return Future.value(false);
   }
+  Future bfs(int src,int dest) async{
+    Queue queue = new Queue();
+    queue.add(src);
+    // int count = 600
+    while(queue.isEmpty == false){
+      // count -=1;
+      int curr = queue.removeFirst();
+      print(curr);
+      if(visi[curr] == 1){
+        continue;
+      }
+      visi[curr] = 1;
+      await wait();
+      if(curr == dest){
+      valueController.cellController[curr].color.value = Colors.green;
+      return;
+      }
+      int i= curr ~/perRow,j = curr%perRow;
+      valueController.cellController[curr].color.value = Colors.black;
+      if(i > 0 && matrix[curr][0] == 1 && visi[curr-perRow]==0){
+          //up
+         queue.add(curr-perRow);
+      }
+        if(j+1 < perRow && matrix[curr][1] == 1 && visi[i*perRow + j+1] == 0){
+          //right..
+          queue.add(curr+1);
+        }
+        if(i+1 < numRow && matrix[curr][2] == 1 && visi[(i+1)*perRow + j] == 0){
+            //down
+          queue.add(curr + perRow);
+        }
+        if(j-1 >=0 && visi[i*perRow + j-1] == 0 && matrix[curr][3] == 1){
+            //left
+            queue.add(curr-1);
+        }
+    }
+  } 
 }
 
 

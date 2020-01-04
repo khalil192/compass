@@ -104,7 +104,7 @@ class _CellState extends State<Cell> {
                   width: cellLength,
                   height: cellLength,
                   decoration: BoxDecoration(
-                 border: Border.all(color: Colors.black),
+                //  border: Border.all(color: Colors.black),
                  color: cellColor,
                    ),
                 );
