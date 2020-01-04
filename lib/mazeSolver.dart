@@ -108,7 +108,7 @@ class MazeSolver{
     while(queue.isEmpty == false){
       // count -=1;
       int curr = queue.removeFirst();
-      print(curr);
+      // print(curr);
       if(visi[curr] == 1){
         continue;
       }

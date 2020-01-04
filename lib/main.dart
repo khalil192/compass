@@ -26,8 +26,8 @@ class Grid extends StatefulWidget {
 }
 
 class _GridState extends State<Grid> {
-  static int perRow = 30;
-  static int numCells = 600;
+  static int perRow = 35;
+  static int numCells = 1225;
   ValueController valueController =  ValueController(numCells,perRow);
   void solveMaze(){
     MazeSolver mazeSolver  = new MazeSolver(valueController);
@@ -81,29 +81,43 @@ class _GridState extends State<Grid> {
           body:
           Center(
             child: Container(
-              width: 800,
-              height: 500,
+              width: 1000,
+              height: 1200,
               child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Container(
-                  height: 1000,
-                  width: 1200,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                  alignment: Alignment.bottomCenter ,
+                  child: GridView.count(
+                  crossAxisCount: perRow,
                     children: <Widget>[
-                      for(int i=0;i<20;i++)
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          for(int j=0;j<30;j++)
-                            Cell(valueController.cellController[i*30 + j]),
-                        ],
-                      ),
+                      for(int i=0;i<numCells;i++)
+                        Cell(valueController.cellController[i]),
                     ],
-                  ),
-                ),
+                ), 
               ),
             ),
+          //   child: Container(
+          //     width: 800,
+          //     height: 500,
+          //     child: Align(
+          //         alignment: Alignment.bottomCenter,
+          //         child: Container(
+          //         height: 1000,
+          //         width: 1200,
+          //         child: Column(
+          //           crossAxisAlignment: CrossAxisAlignment.end,
+          //           children: <Widget>[
+          //             for(int i=0;i<20;i++)
+          //             Row(
+          //               mainAxisAlignment: MainAxisAlignment.center,
+          //               children: <Widget>[
+          //                 for(int j=0;j<30;j++)
+          //                   Cell(valueController.cellController[i*30 + j]),
+          //               ],
+          //             ),
+          //           ],
+          //         ),
+          //       ),
+          //     ),
+          //   ),
           ),
           floatingActionButton: FloatingActionButton(
             onPressed: ()=>{
