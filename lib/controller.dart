@@ -14,7 +14,8 @@ class ValueController{
   }
   void selectIndex(int index){
     if(cellController[index].color.value == Colors.white){
-      cellController[index].color.value = Colors.blue;
+      // cellController[index].color.value = Colors.blue;
+      cellController[index].selectedAs.value = "block";
     }
   }
 }
@@ -32,6 +33,9 @@ class CellController{
   Widget getWidget(){
       if(selectedAs.value == "normal"){
         return Container();
+      }
+      if(selectedAs.value == "block"){
+        return Container(color: Colors.blue);
       }
       if(selectedAs.value == "start"){
         return Container(

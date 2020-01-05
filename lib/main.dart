@@ -9,7 +9,7 @@ void main() => runApp(MyApp());
 
 String searchMethod = "dfs";
 
-String currentSelection = "start";
+String currentSelection = "block";
 
 class MyApp extends StatelessWidget {
   @override
@@ -155,15 +155,31 @@ final Set<int> selectedIndexes = Set<int>();
   }
   @override
   Widget build(BuildContext context) {
+    print(selectedIndexes);
+    print(currentSelection);
     for(int index in selectedIndexes){
       if(currentSelection == 'block'){
       widget.valueController.selectIndex(index); 
       }
       if(currentSelection == 'start'){
+        if(prevEndSelected == lastStartSelected){
+            if(prevEndSelected% widget.valueController.perRow > 0){
+              lastStartSelected -=1;
+            }else{
+              lastStartSelected +=1;
+            }
+        }
         widget.valueController.cellController[prevStartSelected].selectedAs.value = "normal";
         prevStartSelected = lastStartSelected;
       }
       if(currentSelection == 'end'){
+        if(prevStartSelected == lastEndSelected){
+            if(prevStartSelected% widget.valueController.perRow > 0){
+              lastEndSelected -=1;
+            }else{
+              lastEndSelected +=1;
+            }
+        }
         widget.valueController.cellController[prevEndSelected].selectedAs.value = "normal";
         prevEndSelected = lastEndSelected;
       }
@@ -236,23 +252,32 @@ class Cell extends StatefulWidget {
   _CellState createState() => _CellState();
 }
 
+Color getColor(String selectedAs){
+    if(selectedAs == "block"){
+      return Colors.blue;
+    }
+    return Colors.white;
+}
 int startSelection = -1;
 class _CellState extends State<Cell> {
-  Future cellClicked() async{
+  void cellClicked() async{
+  currentSelection =  widget.cellController.selectedAs.value;
   switch(currentSelection){
-  case "start" :{
-      widget.cellController.color.value = Colors.white;
-      }
-      break;
-  case "block" :{
-      widget.cellController.color.value = Colors.blue;
+    case "normal":{
+      currentSelection = "block";
+      widget.cellController.selectedAs.value = currentSelection;
+    }
+    break;
+  }  
   }
-  break;
-  case "end" :{
-    widget.cellController.color.value = Colors.white;
-  }
-  break;
-  }
+  void updateCurrSelection(){
+    currentSelection =  widget.cellController.selectedAs.value;
+  switch(currentSelection){
+    case "normal":{
+      currentSelection = "block";
+    }
+    break;
+  }  
   }
   @override
   Widget build(BuildContext context){
@@ -260,19 +285,31 @@ class _CellState extends State<Cell> {
       valueListenable: widget.cellController.length,
       builder: (context,cellLength,child){
         return GestureDetector(
-          onTap: ()=>{
-            cellClicked()
+          onTap: ()=>{            
+            cellClicked(),
+          },
+          onVerticalDragStart: (details){
+            updateCurrSelection();
+          },
+          onVerticalDragUpdate: (details){
+            updateCurrSelection();
+          },
+          onHorizontalDragStart: (details){
+            updateCurrSelection();
+          },
+          onHorizontalDragUpdate: (details){
+            updateCurrSelection();
           },
           child: ValueListenableBuilder(
-            valueListenable: widget.cellController.color,
-            builder: (context, cellColor, child){
+            valueListenable: widget.cellController.selectedAs,
+            builder: (context, selectedAs, child){
                 return AnimatedContainer(
                   duration: Duration(milliseconds: 50),
                   width: cellLength,
                   height: cellLength,
                   decoration: BoxDecoration(
                  border: Border.all(color: Colors.blue[200]),
-                 color: cellColor,
+                  color: getColor(widget.cellController.selectedAs.value), 
                    ),
                   child: widget.cellController.getWidget(),
                 );
