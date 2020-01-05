@@ -22,9 +22,26 @@ class ValueController{
 class CellController{
   ValueNotifier<double> length;
   ValueNotifier<Color> color;
+  ValueNotifier<String> selectedAs;
   int index,perRow;
   CellController(this.index,this.perRow){
     length = new ValueNotifier(10.0);
     color = new ValueNotifier(Colors.white);
+    selectedAs = new ValueNotifier("normal");
+  }
+  Widget getWidget(){
+      if(selectedAs.value == "normal"){
+        return Container();
+      }
+      if(selectedAs.value == "start"){
+        return Container(
+          child: Icon(Icons.send),
+        );
+      }
+      if(selectedAs.value == "end"){
+        return Container(
+          child: Icon(Icons.stop),
+        );
+      }
   }
 }

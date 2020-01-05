@@ -9,6 +9,8 @@ void main() => runApp(MyApp());
 
 String searchMethod = "dfs";
 
+String currentSelection = "start";
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context){
@@ -76,6 +78,29 @@ class _HomeScreenState extends State<HomeScreen> {
                           }
                   ).toList(),
                   ),
+                   DropdownButton<String>(
+                    value: currentSelection,
+                    icon: Icon(Icons.keyboard_arrow_down),
+                    iconSize: 24,
+                    elevation: 16,
+                    style: TextStyle(
+                    color: Colors.deepPurple
+                      ),
+                      onChanged: (String newValue) {
+                                setState(() {
+                                  currentSelection = newValue;
+                                });
+                          },
+                          items: <String>['start','block','end']
+                          .map<DropdownMenuItem<String>>((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                          }
+                  ).toList(),
+                  ),
+                
                 ],
               )
             ],
@@ -91,7 +116,7 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 class Grid extends StatefulWidget {
- final ValueController valueController;
+  final ValueController valueController;
   Grid(this.valueController);
   @override
   _GridState createState() => _GridState();
@@ -117,19 +142,34 @@ final Set<int> selectedIndexes = Set<int>();
       }
     }
   }
-
+  int lastStartSelected = 0;
+  int prevStartSelected = 0;
+  int lastEndSelected = 230;
+  int prevEndSelected = 230;
   _selectIndex(int index) {
     setState(() {
       selectedIndexes.add(index);
+      lastStartSelected = index;
+      lastEndSelected = index;
     });
   }
- 
   @override
   Widget build(BuildContext context) {
     for(int index in selectedIndexes){
+      if(currentSelection == 'block'){
       widget.valueController.selectIndex(index); 
       }
-    // print(selectedIndexes);
+      if(currentSelection == 'start'){
+        widget.valueController.cellController[prevStartSelected].selectedAs.value = "normal";
+        prevStartSelected = lastStartSelected;
+      }
+      if(currentSelection == 'end'){
+        widget.valueController.cellController[prevEndSelected].selectedAs.value = "normal";
+        prevEndSelected = lastEndSelected;
+      }
+    }
+    widget.valueController.cellController[prevStartSelected].selectedAs.value = "start";
+    widget.valueController.cellController[prevEndSelected].selectedAs.value = "end";
     return Container(
       width: 900,
       height: 900,
@@ -196,22 +236,33 @@ class Cell extends StatefulWidget {
   _CellState createState() => _CellState();
 }
 
+int startSelection = -1;
 class _CellState extends State<Cell> {
-  Future expand() async{
-  widget.cellController.length.value = widget.cellController.length.value +1;
-  widget.cellController.color.value = Colors.blue[900];
-  // await wait();
-  // widget.cellController.color.value = Colors.white;
-  widget.cellController.length.value = widget.cellController.length.value -1;
+  Future cellClicked() async{
+  switch(currentSelection){
+  case "start" :{
+      widget.cellController.color.value = Colors.white;
+      }
+      break;
+  case "block" :{
+      widget.cellController.color.value = Colors.blue;
   }
-  
+  break;
+  case "end" :{
+    widget.cellController.color.value = Colors.white;
+  }
+  break;
+  }
+  }
   @override
   Widget build(BuildContext context){
     return ValueListenableBuilder(
       valueListenable: widget.cellController.length,
       builder: (context,cellLength,child){
         return GestureDetector(
-          onTap: ()=>{expand()},
+          onTap: ()=>{
+            cellClicked()
+          },
           child: ValueListenableBuilder(
             valueListenable: widget.cellController.color,
             builder: (context, cellColor, child){
@@ -220,9 +271,10 @@ class _CellState extends State<Cell> {
                   width: cellLength,
                   height: cellLength,
                   decoration: BoxDecoration(
-                 border: Border.all(color: Colors.black),
+                 border: Border.all(color: Colors.blue[200]),
                  color: cellColor,
                    ),
+                  child: widget.cellController.getWidget(),
                 );
             },
           ),
