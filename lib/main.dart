@@ -243,8 +243,6 @@ class _Foo extends RenderProxyBox {
 }
 
 
-
-
 class Cell extends StatefulWidget {
   CellController cellController;
   Cell(this.cellController);
@@ -271,6 +269,21 @@ class _CellState extends State<Cell> {
   }  
   }
   void updateCurrSelection(){
+    String nowSelection =  widget.cellController.selectedAs.value;
+  switch (currentSelection){
+    case "normal":{
+      currentSelection = "block";
+    }
+    break;
+  }
+  switch(nowSelection){
+    case "normal":{
+      currentSelection = "block";
+    }
+    break;
+  }  
+  }
+  void updateStartSelection(){
     currentSelection =  widget.cellController.selectedAs.value;
   switch(currentSelection){
     case "normal":{
@@ -289,13 +302,13 @@ class _CellState extends State<Cell> {
             cellClicked(),
           },
           onVerticalDragStart: (details){
-            updateCurrSelection();
+            updateStartSelection();
           },
           onVerticalDragUpdate: (details){
             updateCurrSelection();
           },
           onHorizontalDragStart: (details){
-            updateCurrSelection();
+            updateStartSelection();
           },
           onHorizontalDragUpdate: (details){
             updateCurrSelection();
