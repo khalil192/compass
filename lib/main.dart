@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'controller.dart';
 import 'mazeSolver.dart';
+import 'package:flutter/rendering.dart';
+
 
 //git push origin --set-upstream gh-pages
 void main() => runApp(MyApp());
@@ -26,8 +28,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  static int perRow = 35;
-  static int numCells = 1225;
+  static int perRow = 30;
+  static int numCells = 600;
   ValueController valueController =  ValueController(numCells,perRow);
    void solveMaze(){
     MazeSolver mazeSolver  = new MazeSolver(valueController);
@@ -78,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
               )
             ],
           ),
-          body: Grid(valueController), 
+          body: Center(child: Grid(valueController)), 
            floatingActionButton: FloatingActionButton(
             onPressed: ()=>{
                 solveMaze(),
@@ -96,21 +98,95 @@ class Grid extends StatefulWidget {
 }
 
 class _GridState extends State<Grid> {
-  // static int perRow = 35;
-  // static int numCells = 1225;   
+final Set<int> selectedIndexes = Set<int>();
+  final key = GlobalKey();
+  final Set<_Foo> _trackTaped = Set<_Foo>();
+
+  _detectTapedItem(PointerEvent event) {
+    final RenderBox box = key.currentContext.findRenderObject();
+    final result = BoxHitTestResult();
+    Offset local = box.globalToLocal(event.position);
+    if (box.hitTest(result, position: local)) {
+      for (final hit in result.path) {
+        /// temporary variable so that the [is] allows access of [index]
+        final target = hit.target;
+        if (target is _Foo && !_trackTaped.contains(target)) {
+          _trackTaped.add(target);
+          _selectIndex(target.index);
+        }
+      }
+    }
+  }
+
+  _selectIndex(int index) {
+    setState(() {
+      selectedIndexes.add(index);
+    });
+  }
+ 
   @override
   Widget build(BuildContext context) {
-    return  Center(
-      child: GridView.count(
-        crossAxisCount: widget.valueController.perRow,
-        children: <Widget>[
-          for(int i=0;i<widget.valueController.numCells;i++)
-            Cell(widget.valueController.cellController[i]),
-        ],
+    for(int index in selectedIndexes){
+      widget.valueController.selectIndex(index); 
+      }
+    // print(selectedIndexes);
+    return Container(
+      width: 900,
+      height: 900,
+      child: Listener(
+        onPointerDown: _detectTapedItem,
+        onPointerMove: _detectTapedItem,
+        onPointerUp: _clearSelection,
+        child: GridView.builder(
+          key: key,
+          itemCount: widget.valueController.numCells,
+          physics: NeverScrollableScrollPhysics(),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: widget.valueController.perRow, // change this value
+            childAspectRatio: 1.0,
+            crossAxisSpacing: 5.0,
+            mainAxisSpacing: 5.0,
+          ),
+          itemBuilder: (context, index) {
+            return Foo(
+              index: index,
+              child: Cell(widget.valueController.cellController[index]),
+            );
+          },
+        ),
       ),
     );
+  }
+
+  void _clearSelection(PointerUpEvent event) {
+    _trackTaped.clear();
+    setState(() {
+      selectedIndexes.clear();
+    });
+  }
 }
+
+class Foo extends SingleChildRenderObjectWidget {
+  final int index;
+
+  Foo({Widget child, this.index, Key key}) : super(child: child, key: key);
+
+  @override
+  _Foo createRenderObject(BuildContext context) {
+    return _Foo()..index = index;
+  }
+
+  @override
+  void updateRenderObject(BuildContext context, _Foo renderObject) {
+    renderObject..index = index;
+  }
 }
+
+class _Foo extends RenderProxyBox {
+  int index;
+}
+
+
 
 
 class Cell extends StatefulWidget {
@@ -128,7 +204,7 @@ class _CellState extends State<Cell> {
   // widget.cellController.color.value = Colors.white;
   widget.cellController.length.value = widget.cellController.length.value -1;
   }
-
+  
   @override
   Widget build(BuildContext context){
     return ValueListenableBuilder(
@@ -144,7 +220,7 @@ class _CellState extends State<Cell> {
                   width: cellLength,
                   height: cellLength,
                   decoration: BoxDecoration(
-                //  border: Border.all(color: Colors.black),
+                 border: Border.all(color: Colors.black),
                  color: cellColor,
                    ),
                 );

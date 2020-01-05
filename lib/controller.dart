@@ -12,6 +12,11 @@ class ValueController{
       cellController[i] = new CellController(i,perRow);
     }
   }
+  void selectIndex(int index){
+    if(cellController[index].color.value == Colors.white){
+      cellController[index].color.value = Colors.blue;
+    }
+  }
 }
 
 class CellController{
@@ -19,7 +24,7 @@ class CellController{
   ValueNotifier<Color> color;
   int index,perRow;
   CellController(this.index,this.perRow){
-    length = new ValueNotifier(20.0);
+    length = new ValueNotifier(10.0);
     color = new ValueNotifier(Colors.white);
   }
 }
