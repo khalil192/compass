@@ -9,27 +9,27 @@ String searchMethod = "dfs";
 
 class MyApp extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context){
     return MaterialApp(
       title: 'path finder',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Grid(),
+      home: HomeScreen(),
     );
   }
 }
 
-class Grid extends StatefulWidget {
+class HomeScreen extends StatefulWidget {
   @override
-  _GridState createState() => _GridState();
+  _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _GridState extends State<Grid> {
+class _HomeScreenState extends State<HomeScreen> {
   static int perRow = 35;
   static int numCells = 1225;
   ValueController valueController =  ValueController(numCells,perRow);
-  void solveMaze(){
+   void solveMaze(){
     MazeSolver mazeSolver  = new MazeSolver(valueController);
     mazeSolver.fillCells();
     switch(searchMethod){
@@ -78,54 +78,38 @@ class _GridState extends State<Grid> {
               )
             ],
           ),
-          body:
-          Center(
-            child: Container(
-              width: 1000,
-              height: 1200,
-              child: Align(
-                  alignment: Alignment.bottomCenter ,
-                  child: GridView.count(
-                  crossAxisCount: perRow,
-                    children: <Widget>[
-                      for(int i=0;i<numCells;i++)
-                        Cell(valueController.cellController[i]),
-                    ],
-                ), 
-              ),
-            ),
-          //   child: Container(
-          //     width: 800,
-          //     height: 500,
-          //     child: Align(
-          //         alignment: Alignment.bottomCenter,
-          //         child: Container(
-          //         height: 1000,
-          //         width: 1200,
-          //         child: Column(
-          //           crossAxisAlignment: CrossAxisAlignment.end,
-          //           children: <Widget>[
-          //             for(int i=0;i<20;i++)
-          //             Row(
-          //               mainAxisAlignment: MainAxisAlignment.center,
-          //               children: <Widget>[
-          //                 for(int j=0;j<30;j++)
-          //                   Cell(valueController.cellController[i*30 + j]),
-          //               ],
-          //             ),
-          //           ],
-          //         ),
-          //       ),
-          //     ),
-          //   ),
-          ),
-          floatingActionButton: FloatingActionButton(
+          body: Grid(valueController), 
+           floatingActionButton: FloatingActionButton(
             onPressed: ()=>{
                 solveMaze(),
             },
-          ),
+          )
     );
   }
+}
+
+class Grid extends StatefulWidget {
+ final ValueController valueController;
+  Grid(this.valueController);
+  @override
+  _GridState createState() => _GridState();
+}
+
+class _GridState extends State<Grid> {
+  // static int perRow = 35;
+  // static int numCells = 1225;   
+  @override
+  Widget build(BuildContext context) {
+    return  Center(
+      child: GridView.count(
+        crossAxisCount: widget.valueController.perRow,
+        children: <Widget>[
+          for(int i=0;i<widget.valueController.numCells;i++)
+            Cell(widget.valueController.cellController[i]),
+        ],
+      ),
+    );
+}
 }
 
 
