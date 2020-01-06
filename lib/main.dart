@@ -302,6 +302,18 @@ class _CellState extends State<Cell> {
     break;
   }  
   }
+  void updateStopSelection(){
+    switch(currentSelection){
+    case "start":{
+      currentSelection = "block";
+    }
+    break;
+    case "end":{
+      currentSelection = "block";
+    }
+    break;
+  } 
+  }
   @override
   Widget build(BuildContext context){
     return ValueListenableBuilder(
@@ -317,11 +329,17 @@ class _CellState extends State<Cell> {
           onVerticalDragUpdate: (details){
             updateCurrSelection();
           },
+          onVerticalDragEnd: (details){
+            updateStopSelection();
+          },
           onHorizontalDragStart: (details){
             updateStartSelection();
           },
           onHorizontalDragUpdate: (details){
             updateCurrSelection();
+          },
+          onHorizontalDragEnd: (details){
+            updateStopSelection();
           },
           child: ValueListenableBuilder(
             valueListenable: widget.cellController.selectedAs,
