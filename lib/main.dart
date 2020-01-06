@@ -266,28 +266,38 @@ class _CellState extends State<Cell> {
       widget.cellController.selectedAs.value = currentSelection;
     }
     break;
+    case "block":{
+      currentSelection = "normal";
+      widget.cellController.selectedAs.value = currentSelection;
+    }
+    break;
   }  
   }
   void updateCurrSelection(){
-    String nowSelection =  widget.cellController.selectedAs.value;
-  switch (currentSelection){
-    case "normal":{
-      currentSelection = "block";
-    }
-    break;
-  }
-  switch(nowSelection){
-    case "normal":{
-      currentSelection = "block";
-    }
-    break;
-  }  
+  //   String nowSelection =  widget.cellController.selectedAs.value;
+  // switch (currentSelection){
+  //   case "normal":{
+  //     currentSelection = "block";
+  //   }
+  //   break;
+  // }
+  // switch(nowSelection){
+  //   case "normal":{
+  //     currentSelection = "block";
+  //   }
+  //   break;
+  // }  
   }
   void updateStartSelection(){
+    print(widget.cellController.index.toString() + " this is dragged");
     currentSelection =  widget.cellController.selectedAs.value;
   switch(currentSelection){
     case "normal":{
       currentSelection = "block";
+    }
+    break;
+    case "block":{
+      currentSelection = "normal";
     }
     break;
   }  
