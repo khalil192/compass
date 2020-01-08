@@ -28,7 +28,7 @@ class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
-
+  
 class _HomeScreenState extends State<HomeScreen> {
   static int perRow = 30;
   static int numCells = 600;
@@ -38,11 +38,11 @@ class _HomeScreenState extends State<HomeScreen> {
     mazeSolver.fillCells();
     switch(searchMethod){
       case "dfs" :{
-        mazeSolver.dfs(0, 587);
+        mazeSolver.findPath("dfs");
       }
       break;
       case "bfs" :{
-        mazeSolver.bfs(0, 587);
+        mazeSolver.findPath("bfs");
       }
       break;
     }
@@ -54,8 +54,17 @@ class _HomeScreenState extends State<HomeScreen> {
             title: Text('path finder'),
             actions: <Widget>[
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
+                  GestureDetector(
+                    onTap: ()=>{
+                      valueController.createRandomMaze(numCells ~/ 4)
+                    },
+                    child: Container(
+                      child: Text("Random Maze"),
+                    ),
+                  )
+                  ,
                   DropdownButton<String>(
                     value: searchMethod,
                     icon: Icon(Icons.keyboard_arrow_down),
@@ -289,17 +298,17 @@ class _CellState extends State<Cell> {
   // }  
   }
   void updateStartSelection(){
-    print(widget.cellController.index.toString() + " this is dragged");
+    // print(widget.cellController.index.toString() + " this is dragged");
     currentSelection =  widget.cellController.selectedAs.value;
   switch(currentSelection){
     case "normal":{
       currentSelection = "block";
     }
     break;
-    case "block":{
-      currentSelection = "normal";
-    }
-    break;
+    // case "block":{
+    //   currentSelection = "block";
+    // }
+    // break;
   }  
   }
   void updateStopSelection(){

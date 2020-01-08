@@ -1,4 +1,6 @@
 
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -16,6 +18,26 @@ class ValueController{
     if(cellController[index].color.value == Colors.white){
       // cellController[index].color.value = Colors.blue;
       cellController[index].selectedAs.value = "block";
+    }
+  }
+  void createRandomMaze(int numOfBlocks)async{
+    int start = -1,dest = -1; 
+    for(int i=0;i<numCells;i++){
+        if(cellController[i].selectedAs.value == "start"){
+          start = i;
+        }
+         if(cellController[i].selectedAs.value == "end"){
+          dest = i;
+        }
+    }    
+    var rng = new Random();
+    for(int i=0;i<numOfBlocks;i++){
+        int num = rng.nextInt(numCells);
+        if(num == start || num == dest){
+            continue; i--;
+        }
+       await wait();
+        cellController[num].selectedAs.value = "block";
     }
   }
 }
@@ -47,5 +69,28 @@ class CellController{
           child: Icon(Icons.stop),
         );
       }
+      if(selectedAs.value == "currVisted"){
+        return Container(color: Colors.black);
+      }
+      if(selectedAs.value == "destVisited"){
+        return Container(color: Colors.purple);
+      }
+      if(selectedAs.value == "visited"){
+        return Container(color: Colors.green[200]);
+      }
   }
+  
+  
+
+}
+
+
+Future sleepSum(int valueOne, int valueTwo) {
+  return Future.delayed(const Duration(seconds: 1), () => valueOne + valueTwo);
+}
+
+Future wait() {
+  // final milliseconds = lerpDouble(100, 1, speed).toInt();
+  // return Future.delayed(Duration(milliseconds: milliseconds));
+  return Future.delayed(Duration(milliseconds: 1));
 }
