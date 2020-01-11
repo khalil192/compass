@@ -91,29 +91,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           }
                   ).toList(),
                   ),
-                   DropdownButton<String>(
-                    value: currentSelection,
-                    icon: Icon(Icons.keyboard_arrow_down),
-                    iconSize: 24,
-                    elevation: 16,
-                    style: TextStyle(
-                    color: Colors.deepPurple
-                      ),
-                      onChanged: (String newValue) {
-                                setState(() {
-                                  currentSelection = newValue;
-                                });
-                          },
-                          items: <String>['start','block','end']
-                          .map<DropdownMenuItem<String>>((String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value),
-                                  );
-                          }
-                  ).toList(),
-                  ),
-                
                 ],
               )
             ],

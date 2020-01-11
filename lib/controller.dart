@@ -82,7 +82,10 @@ class CellController{
         return Container(color: Colors.yellow[200]);
       }
       if(selectedAs.value == "in-path"){
-        return Container(color: Colors.black);
+      return Container(
+        // color: Colors.black,
+      child: Icon(Icons.send),
+        );
       }
   }
   
