@@ -45,6 +45,10 @@ class _HomeScreenState extends State<HomeScreen> {
         mazeSolver.findPath("bfs");
       }
       break;
+      case "aStar" :{
+        mazeSolver.findPath("aStar");
+      }
+      break;
     }
   }
   @override
@@ -78,7 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   searchMethod = newValue;
                                 });
                           },
-                          items: <String>['dfs' , 'bfs']
+                          items: <String>['dfs' , 'bfs', 'aStar']
                           .map<DropdownMenuItem<String>>((String value) {
                                   return DropdownMenuItem<String>(
                                     value: value,

@@ -78,6 +78,12 @@ class CellController{
       if(selectedAs.value == "visited"){
         return Container(color: Colors.green[200]);
       }
+      if(selectedAs.value == "semi-visited"){
+        return Container(color: Colors.yellow[200]);
+      }
+      if(selectedAs.value == "in-path"){
+        return Container(color: Colors.black);
+      }
   }
   
   
