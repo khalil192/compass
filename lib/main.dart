@@ -3,7 +3,8 @@ import 'controller.dart';
 import 'mazeSolver.dart';
 import 'package:flutter/rendering.dart';
 
-
+//flutter pub global activate peanut
+//flutter pub get
 //git push origin --set-upstream gh-pages
 void main() => runApp(MyApp());
 
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'path finder',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.black,
       ),
       home: HomeScreen(),
     );
@@ -147,7 +148,7 @@ final Set<int> selectedIndexes = Set<int>();
   Widget build(BuildContext context) {
     print(selectedIndexes);
     print(currentSelection);
-    for(int index in selectedIndexes){
+    for(int index in selectedIndexes){s
       if(currentSelection == 'block'){
       widget.valueController.selectIndex(index); 
       }

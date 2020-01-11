@@ -64,7 +64,9 @@ class MazeSolver{
 
   void findPath(String method){
     int start = -1,dest = -1; 
+    List<int> parentList = new List<int>(numCells);
     for(int i=0;i<numCells;i++){
+        parentList[i] = i;
         if(valueController.cellController[i].selectedAs.value == "start"){
           start = i;
         }
@@ -72,20 +74,30 @@ class MazeSolver{
           dest = i;
         }
     }
+
     switch(method){
-    case  "dfs" :{ dfs(start,dest); }
+    case  "dfs" :{
+        
+        dfs(start,dest,parentList);
+        }
     break;
-     case  "bfs" :{ bfs(start,dest); }
+     case  "bfs" :{ bfs(start,dest,parentList); }
     break;
     case  "aStar" :{ aStarSearch(start,dest); }
     break;
     }
   }
-  Future<bool> dfs(int curr,int dest) async{
+  Future<bool> dfs(int curr,int dest,List<int> parentList) async{
       visi[curr] = 1;
       if(curr == dest){
       // valueController.cellController[curr].color.value = Colors.red;
       valueController.cellController[curr].selectedAs.value = "destVisited";
+      while(curr != parentList[curr]){
+      valueController.cellController[curr].selectedAs.value = "in-path";
+      await wait();
+        curr = parentList[curr];
+      }
+      valueController.cellController[curr].selectedAs.value = "in-path";
       return Future.value(true);
       }
       int i= curr ~/perRow,j = curr%perRow;
@@ -96,7 +108,8 @@ class MazeSolver{
           valueController.cellController[(i-1)*perRow + j].selectedAs.value = "semi-visited";
         if(matrix[curr][0] == 1 && visi[curr-perRow]==0){
           //up
-          if (await dfs((i-1)*perRow+j , dest)){
+          parentList[curr-perRow] = curr;
+          if (await dfs((i-1)*perRow+j , dest,parentList)){
             return Future.value(true);
           }
         }
@@ -104,28 +117,31 @@ class MazeSolver{
         if(j+1 < perRow && matrix[curr][1] == 1 && visi[i*perRow + j+1] == 0){
           //right..
          valueController.cellController[i*perRow + j+1].selectedAs.value = "semi-visited";
-          if(await dfs(i*perRow + j+1,dest)){
+          parentList[curr+1] = curr;
+          if(await dfs(i*perRow + j+1,dest,parentList)){
             return Future.value(true);
           }
         }
         if(i+1 < numRow && matrix[curr][2] == 1 && visi[(i+1)*perRow + j] == 0){
             //down
+          parentList[curr+perRow] = curr;
           valueController.cellController[(i+1)*perRow + j].selectedAs.value = "semi-visited";
-         if (await dfs((i+1)*perRow+j , dest)){
+         if (await dfs((i+1)*perRow+j , dest,parentList)){
           return Future.value(true);
          }
         }
         if(j-1 >=0 && visi[i*perRow + j-1] == 0 && matrix[curr][3] == 1){
             //left
             valueController.cellController[i*perRow + j-1].selectedAs.value = "semi-visited";
-            if(await dfs(i*perRow + j-1 , dest )){
+            parentList[curr-1] = curr;
+            if(await dfs(i*perRow + j-1 , dest,parentList )){
                           return Future.value(true);
             }
         }
         valueController.cellController[curr].color.value = Colors.orange;
         return Future.value(false);
   }
-  Future bfs(int src,int dest) async{
+  Future bfs(int src,int dest,List<int> parentList) async{
     Queue queue = new Queue();
     queue.add(src);
     // int count = 600
@@ -140,6 +156,12 @@ class MazeSolver{
       await wait();
       if(curr == dest){
       valueController.cellController[curr].selectedAs.value = "destVisited";
+      while(curr != parentList[curr]){
+      valueController.cellController[curr].selectedAs.value = "in-path";
+      await wait();
+        curr = parentList[curr];
+      }
+      valueController.cellController[curr].selectedAs.value = "in-path";
       return;
       }
       int i= curr ~/perRow,j = curr%perRow;
@@ -149,21 +171,25 @@ class MazeSolver{
 
       if(i > 0 && matrix[curr][0] == 1 && visi[curr-perRow]==0){
           //up
+          parentList[curr-perRow] = curr;
          queue.add(curr-perRow);
         valueController.cellController[curr-perRow].selectedAs.value = "semi-visited";
       }
         if(j+1 < perRow && matrix[curr][1] == 1 && visi[i*perRow + j+1] == 0){
           //right..
+          parentList[curr+1] = curr;
           queue.add(curr+1);
           valueController.cellController[curr+1].selectedAs.value = "semi-visited";
         }
         if(i+1 < numRow && matrix[curr][2] == 1 && visi[(i+1)*perRow + j] == 0){
             //down
+          parentList[curr+perRow] = curr;
           queue.add(curr + perRow);
           valueController.cellController[curr+perRow].selectedAs.value = "semi-visited";
         }
         if(j-1 >=0 && visi[i*perRow + j-1] == 0 && matrix[curr][3] == 1){
             //left
+            parentList[curr-1] = curr;
             queue.add(curr-1);
             valueController.cellController[curr-1].selectedAs.value = "semi-visited";
         }
