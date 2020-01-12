@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'path finder',
       theme: ThemeData(
-        primarySwatch: Colors.black,
+        primarySwatch: Colors.blue,
       ),
       home: HomeScreen(),
     );
@@ -31,8 +31,8 @@ class HomeScreen extends StatefulWidget {
 }
   
 class _HomeScreenState extends State<HomeScreen> {
-  static int perRow = 30;
-  static int numCells = 600;
+  static int perRow = 40;
+  static int numCells = 1200;
   ValueController valueController =  ValueController(numCells,perRow);
    void solveMaze(){
     MazeSolver mazeSolver  = new MazeSolver(valueController);
@@ -52,6 +52,11 @@ class _HomeScreenState extends State<HomeScreen> {
       break;
     }
   }
+  void clearAll(){
+    setState(() {
+      valueController = new ValueController(numCells, perRow);
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,8 +64,17 @@ class _HomeScreenState extends State<HomeScreen> {
             title: Text('path finder'),
             actions: <Widget>[
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
+                  GestureDetector(
+                    onTap: ()=>{
+                      clearAll(),
+                    },
+                    child: Container(
+                      child: Text("clear all blocks"),
+                    ),
+                  ),
+                  SizedBox(width: 10,),
                   GestureDetector(
                     onTap: ()=>{
                       valueController.createRandomMaze(numCells ~/ 4)
@@ -70,6 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   )
                   ,
+                  SizedBox(width: 10,),
                   DropdownButton<String>(
                     value: searchMethod,
                     icon: Icon(Icons.keyboard_arrow_down),
@@ -92,6 +107,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           }
                   ).toList(),
                   ),
+                  SizedBox(width: 50,),
                 ],
               )
             ],
@@ -148,7 +164,7 @@ final Set<int> selectedIndexes = Set<int>();
   Widget build(BuildContext context) {
     print(selectedIndexes);
     print(currentSelection);
-    for(int index in selectedIndexes){s
+    for(int index in selectedIndexes){
       if(currentSelection == 'block'){
       widget.valueController.selectIndex(index); 
       }
@@ -178,8 +194,8 @@ final Set<int> selectedIndexes = Set<int>();
     widget.valueController.cellController[prevStartSelected].selectedAs.value = "start";
     widget.valueController.cellController[prevEndSelected].selectedAs.value = "end";
     return Container(
-      width: 900,
-      height: 900,
+      width: MediaQuery.of(context).size.width * 0.9,
+      height: MediaQuery.of(context).size.height *0.8,
       child: Listener(
         onPointerDown: _detectTapedItem,
         onPointerMove: _detectTapedItem,

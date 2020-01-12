@@ -36,7 +36,7 @@ class ValueController{
         if(num == start || num == dest){
             continue; i--;
         }
-       await wait();
+       await waitMicroseconds(100);
         cellController[num].selectedAs.value = "block";
     }
   }
@@ -102,4 +102,9 @@ Future wait() {
   // final milliseconds = lerpDouble(100, 1, speed).toInt();
   // return Future.delayed(Duration(milliseconds: milliseconds));
   return Future.delayed(Duration(milliseconds: 1));
+}
+Future waitMicroseconds(int microseconds){
+  // final milliseconds = lerpDouble(100, 1, speed).toInt();
+  // return Future.delayed(Duration(milliseconds: milliseconds));
+  return Future.delayed(Duration(microseconds: microseconds));
 }
