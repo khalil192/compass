@@ -1,7 +1,3 @@
-import 'dart:collection';
-
-import 'package:flutter/material.dart';
-import 'package:pathvisualizer/aStarSearch.dart';
 
 import 'controller.dart';
 import 'dfs.dart';

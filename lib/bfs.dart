@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:pathvisualizer/controller.dart';
+import 'controller.dart';
 import 'dart:collection';
 class Bfs{
   List<int> parentList;

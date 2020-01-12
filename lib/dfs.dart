@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pathvisualizer/controller.dart';
+import 'controller.dart';
 
 class Dfs{
   List<int> parentList;
