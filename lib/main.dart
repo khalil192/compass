@@ -32,7 +32,7 @@ class HomeScreen extends StatefulWidget {
   
 class _HomeScreenState extends State<HomeScreen> {
   static int perRow = 40;
-  static int numCells = 1200;
+  static int numCells = 1000;
   ValueController valueController =  ValueController(numCells,perRow);
    void solveMaze(){
     MazeSolver mazeSolver  = new MazeSolver(valueController);
@@ -114,6 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           body: Center(child: Grid(valueController)), 
            floatingActionButton: FloatingActionButton(
+             child: Text('search'),
             onPressed: ()=>{
                 solveMaze(),
             },

@@ -66,7 +66,7 @@ class CellController{
       }
       if(selectedAs.value == "end"){
         return Container(
-          child: Icon(Icons.stop),
+          child: Center(child: Icon(Icons.stop)),
         );
       }
       if(selectedAs.value == "currVisted"){
