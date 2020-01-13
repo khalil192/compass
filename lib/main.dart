@@ -8,7 +8,7 @@ import 'package:flutter/rendering.dart';
 //git push origin --set-upstream gh-pages
 void main() => runApp(MyApp());
 
-String searchMethod = "dfs";
+String searchMethod = "Depth First Search";
 
 String currentSelection = "block";
 
@@ -37,7 +37,8 @@ class _HomeScreenState extends State<HomeScreen> {
    void solveMaze(){
     MazeSolver mazeSolver  = new MazeSolver(valueController);
     mazeSolver.fillCells();
-    switch(searchMethod){
+    mazeSolver.findPath(searchMethod);
+    /*switch(searchMethod){
       case "dfs" :{
         mazeSolver.findPath("dfs");
       }
@@ -50,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
         mazeSolver.findPath("aStar");
       }
       break;
-    }
+    }*/
   }
   void clearAll(){
     setState(() {
@@ -98,7 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   searchMethod = newValue;
                                 });
                           },
-                          items: <String>['dfs' , 'bfs', 'aStar']
+                          items: <String>['Depth First Search' , 'Breadth First Search', 'A Star Search', 'Greedy Best First Search']
                           .map<DropdownMenuItem<String>>((String value) {
                                   return DropdownMenuItem<String>(
                                     value: value,

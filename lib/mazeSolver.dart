@@ -3,7 +3,7 @@ import 'controller.dart';
 import 'dfs.dart';
 import 'bfs.dart';
 import 'aStarSearch.dart';
-
+import 'greedyBestFirst.dart';
 //simply convert the maze into adjacency matrix of 
 // cells and if the node is currently marked 
 //then disconnect it from its neighbours..
@@ -75,19 +75,24 @@ class MazeSolver{
     }
 
     switch(method){
-    case  "dfs" :{
+    case  "Depth First Search" :{
         Dfs dfsObject  = new Dfs(valueController, parentList, matrix);
         dfsObject.dfs(start,dest,parentList);
         }
     break;
-     case  "bfs" :{
+     case  "Breadth First Search" :{
         Bfs bfsObject = new Bfs(valueController,parentList,matrix);
         bfsObject.bfs(start,dest,parentList);
          }
     break;
-    case  "aStar" :{ 
+    case  "A Star Search" :{ 
       AStar aStarObject = new AStar(valueController, parentList, matrix);
       aStarObject.aStarSearch(start,dest); 
+      }
+    break;
+    case  "Greedy Best First Search" :{ 
+      GreedyBFS greedyBFSObject = new GreedyBFS(valueController, parentList, matrix);
+      greedyBFSObject.greedyBFSSearch(start, dest);
       }
     break;
     }
