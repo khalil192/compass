@@ -40,6 +40,14 @@ class ValueController{
         cellController[num].selectedAs.value = "block";
     }
   }
+    void clearPath() async{
+        for(int i=0;i<numCells;i++){
+          String curr = cellController[i].selectedAs.value;
+          if((curr != "start" && curr != "end" && curr != "block")){
+            cellController[i].selectedAs.value = "normal";
+          }  
+        }
+    }
 }
 
 class CellController{
@@ -61,7 +69,7 @@ class CellController{
       }
       if(selectedAs.value == "start"){
         return Container(
-          child: Icon(Icons.send),
+          child: Icon(Icons.play_arrow),
         );
       }
       if(selectedAs.value == "end"){
@@ -73,7 +81,9 @@ class CellController{
         return Container(color: Colors.black);
       }
       if(selectedAs.value == "destVisited"){
-        return Container(color: Colors.purple);
+        selectedAs.value ="end";
+        return Container( child: Center(child: Icon(Icons.stop)), );
+        // return Container(color: Colors.purple);
       }
       if(selectedAs.value == "visited"){
         return Container(color: Colors.green[200]);
@@ -85,6 +95,30 @@ class CellController{
       return Container(
         // color: Colors.black,
       child: Icon(Icons.send),
+        );
+      }
+      if(selectedAs.value == "in-path-down"){
+      return Container(
+        // color: Colors.black,
+      child: Icon(Icons.keyboard_arrow_down),
+        );
+      }
+      if(selectedAs.value == "in-path-up"){
+      return Container(
+        // color: Colors.black,
+      child: Icon(Icons.keyboard_arrow_up),
+        );
+      }
+      if(selectedAs.value == "in-path-right"){
+      return Container(
+        // color: Colors.black,
+      child: Icon(Icons.keyboard_arrow_right),
+        );
+      }
+      if(selectedAs.value == "in-path-left"){
+      return Container(
+        // color: Colors.black,
+      child: Icon(Icons.keyboard_arrow_left),
         );
       }
   }

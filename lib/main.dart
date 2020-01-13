@@ -86,6 +86,15 @@ class _HomeScreenState extends State<HomeScreen> {
                   )
                   ,
                   SizedBox(width: 10,),
+                  GestureDetector(
+                    onTap: ()=>{
+                      valueController.clearPath()
+                    },
+                    child: Container(
+                      child: Text("clear path"),
+                    ),
+                  ),
+                  SizedBox(width: 10,),
                   DropdownButton<String>(
                     value: searchMethod,
                     icon: Icon(Icons.keyboard_arrow_down),

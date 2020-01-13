@@ -1,3 +1,5 @@
+import 'package:pathvisualizer/markPath.dart';
+
 import 'controller.dart';
 
  class AStar{
@@ -54,18 +56,14 @@ Future<Pair> removeMin(Set<Pair> openList){
         currj = currPair.cellNum % perRow;
         closedList[curr] = true;
         print(curr.toString() + '  = ' + curri.toString() +' ' + currj.toString());
+        if(valueController.cellController[curr].selectedAs.value == "normal"){
         valueController.cellController[curr].selectedAs.value = "visited";
-        await wait();
-
-        if(curr == dest){
-        valueController.cellController[curr].selectedAs.value = "destVisited";
-        while(parentList[curr] != curr){
-          await wait();
-          valueController.cellController[curr].selectedAs.value = "in-path";
-          curr = parentList[curr];
         }
-        valueController.cellController[curr].selectedAs.value = "in-path";
-        return;
+        await wait();
+        if(curr == dest){
+          MarkPath markPathObject = new MarkPath(valueController, parentList);
+          markPathObject.markPath(curr);
+          return;
         }
         int gNew , fNew , hNew;
         gNew = cellDetails[curr].gValue + 1;

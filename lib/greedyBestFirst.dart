@@ -1,4 +1,5 @@
 import 'controller.dart';
+import 'markPath.dart';
 
  class GreedyBFS{
   List<int> parentList;
@@ -53,20 +54,16 @@ Future<Pair> removeMin(Set<Pair> openList){
         curri = currPair.cellNum ~/ perRow;
         currj = currPair.cellNum % perRow;
         closedList[curr] = true;
-        print(curr.toString() + '  = ' + curri.toString() +' ' + currj.toString());
+        if(valueController.cellController[curr].selectedAs.value == "normal"){
         valueController.cellController[curr].selectedAs.value = "visited";
+        }
         await wait();
-
         if(curr == dest){
-        valueController.cellController[curr].selectedAs.value = "destVisited";
-        while(parentList[curr] != curr){
-          await wait();
-          valueController.cellController[curr].selectedAs.value = "in-path";
-          curr = parentList[curr];
+          MarkPath markPathObject = new MarkPath(valueController, parentList);
+          markPathObject.markPath(curr);
+                  return;
         }
-        valueController.cellController[curr].selectedAs.value = "in-path";
-        return;
-        }
+        // valueController.cellController[curr].selectedAs.value = "in-path";
         int  fNew , hNew;
          if(curri > 0 && matrix[curr][0] == 1 && closedList[curr-perRow] == false){
           //up
@@ -118,8 +115,9 @@ Future<Pair> removeMin(Set<Pair> openList){
         }
         }
     }
+    }
   }
-}
+
 
 class Pair{
   int fValue, cellNum;
