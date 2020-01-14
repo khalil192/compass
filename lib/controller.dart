@@ -20,8 +20,9 @@ class ValueController{
       cellController[index].selectedAs.value = "block";
     }
   }
-  void createRandomMaze(int numOfBlocks)async{
-    int start = -1,dest = -1; 
+  void createRandomMaze()async{
+    int start = -1,dest = -1;
+    int numOfBlocks = numCells ~/ 5; 
     for(int i=0;i<numCells;i++){
         if(cellController[i].selectedAs.value == "start"){
           start = i;

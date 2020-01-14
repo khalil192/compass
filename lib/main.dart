@@ -67,27 +67,21 @@ class _HomeScreenState extends State<HomeScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  GestureDetector(
-                    onTap: ()=>{
+                  RaisedButton(
+                    onPressed: ()=>{
                       clearAll(),
                     },
-                    child: Container(
                       child: Text("clear all blocks"),
-                    ),
                   ),
                   SizedBox(width: 10,),
-                  GestureDetector(
-                    onTap: ()=>{
-                      valueController.createRandomMaze(numCells ~/ 4)
-                    },
-                    child: Container(
-                      child: Text("Random Maze"),
-                    ),
+                  RaisedButton(
+                      child: Text('Random Maze'),
+                      onPressed:()=> {valueController.createRandomMaze()},
                   )
                   ,
                   SizedBox(width: 10,),
-                  GestureDetector(
-                    onTap: ()=>{
+                  RaisedButton(
+                    onPressed: ()=>{
                       valueController.clearPath()
                     },
                     child: Container(
