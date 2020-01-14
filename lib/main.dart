@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'path finder',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.indigo,
       ),
       home: HomeScreen(),
     );
@@ -32,7 +32,7 @@ class HomeScreen extends StatefulWidget {
   
 class _HomeScreenState extends State<HomeScreen> {
   static int perRow = 40;
-  static int numCells = 1000;
+  static int numCells = 800;
   ValueController valueController =  ValueController(numCells,perRow);
    void solveMaze(){
     MazeSolver mazeSolver  = new MazeSolver(valueController);
@@ -68,6 +68,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   RaisedButton(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(10.0),
+                      side : BorderSide(color: Colors.white)
+                    ),
                     onPressed: ()=>{
                       clearAll(),
                     },
@@ -75,12 +79,24 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   SizedBox(width: 10,),
                   RaisedButton(
-                      child: Text('Random Maze'),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(10.0),
+                      side : BorderSide(color: Colors.white)
+                    ),
+                    // color: Colors.green[400],
+                      child: Container(
+                        child: Text('Random Maze'),
+                      ),
                       onPressed:()=> {valueController.createRandomMaze()},
                   )
                   ,
                   SizedBox(width: 10,),
                   RaisedButton(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(10.0),
+                      side : BorderSide(color: Colors.white)
+                    ),
+                    // color: Colors.green[900],
                     onPressed: ()=>{
                       valueController.clearPath()
                     },
@@ -90,13 +106,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   SizedBox(width: 10,),
                   DropdownButton<String>(
+                    
                     value: searchMethod,
                     icon: Icon(Icons.keyboard_arrow_down),
                     iconSize: 24,
+                    iconEnabledColor: Colors.black,
                     elevation: 16,
-                    style: TextStyle(
-                    color: Colors.deepPurple
-                      ),
+                  style: TextStyle(color: Colors.black, fontSize: 20),
+                  isDense: true,
                       onChanged: (String newValue) {
                                 setState(() {
                                   searchMethod = newValue;

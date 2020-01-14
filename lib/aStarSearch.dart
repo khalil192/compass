@@ -1,4 +1,4 @@
-import 'package:pathvisualizer/markPath.dart';
+import 'markPath.dart';
 
 import 'controller.dart';
 
