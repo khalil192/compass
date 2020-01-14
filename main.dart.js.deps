@@ -6,6 +6,7 @@ file:///Users/khalilshaik/Desktop/flutter/visualizer/path_finder/lib/controller.
 file:///Users/khalilshaik/Desktop/flutter/visualizer/path_finder/lib/dfs.dart
 file:///Users/khalilshaik/Desktop/flutter/visualizer/path_finder/lib/greedyBestFirst.dart
 file:///Users/khalilshaik/Desktop/flutter/visualizer/path_finder/lib/main.dart
+file:///Users/khalilshaik/Desktop/flutter/visualizer/path_finder/lib/markPath.dart
 file:///Users/khalilshaik/Desktop/flutter/visualizer/path_finder/lib/mazeSolver.dart
 file:///Users/khalilshaik/development/flutter/.pub-cache/hosted/pub.dartlang.org/collection-1.14.11/lib/collection.dart
 file:///Users/khalilshaik/development/flutter/.pub-cache/hosted/pub.dartlang.org/collection-1.14.11/lib/src/algorithms.dart
