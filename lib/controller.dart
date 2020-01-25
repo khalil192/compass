@@ -143,3 +143,8 @@ Future waitMicroseconds(int microseconds){
   // return Future.delayed(Duration(milliseconds: milliseconds));
   return Future.delayed(Duration(microseconds: microseconds));
 }
+Future waitMilliSeconds(int milliseconds) {
+  // final milliseconds = lerpDouble(100, 1, speed).toInt();
+  // return Future.delayed(Duration(milliseconds: milliseconds));
+  return Future.delayed(Duration(milliseconds: milliseconds));
+}
