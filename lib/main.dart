@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'controller.dart';
 import 'mazeSolver.dart';
 import 'package:flutter/rendering.dart';
-
+import 'recursiveDivision.dart';
 //flutter pub global activate peanut
 //flutter pub get
 //git push origin --set-upstream gh-pages
@@ -38,20 +38,11 @@ class _HomeScreenState extends State<HomeScreen> {
     MazeSolver mazeSolver  = new MazeSolver(valueController);
     mazeSolver.fillCells();
     mazeSolver.findPath(searchMethod);
-    /*switch(searchMethod){
-      case "dfs" :{
-        mazeSolver.findPath("dfs");
-      }
-      break;
-      case "bfs" :{
-        mazeSolver.findPath("bfs");
-      }
-      break;
-      case "aStar" :{
-        mazeSolver.findPath("aStar");
-      }
-      break;
-    }*/
+    
+  }
+  void createMaze(){
+    RecursiveDivision recursiveDivision = new RecursiveDivision(valueController);
+    recursiveDivision.doRecursiveDivide();
   }
   void clearAll(){
     setState(() {
@@ -67,6 +58,16 @@ class _HomeScreenState extends State<HomeScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
+                  RaisedButton(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(10.0),
+                      side : BorderSide(color: Colors.white)
+                    ),
+                    onPressed: ()=>{
+                      createMaze(),
+                    },
+                      child: Text("create Maze"),
+                  ),
                   RaisedButton(
                     shape: RoundedRectangleBorder(
                       borderRadius: new BorderRadius.circular(10.0),
