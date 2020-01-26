@@ -57,7 +57,7 @@ class CellController{
   ValueNotifier<String> selectedAs;
   int index,perRow;
   CellController(this.index,this.perRow){
-    length = new ValueNotifier(10.0);
+    length = new ValueNotifier(2.0);
     color = new ValueNotifier(Colors.white);
     selectedAs = new ValueNotifier("normal");
   }
@@ -70,12 +70,12 @@ class CellController{
       }
       if(selectedAs.value == "start"){
         return Container(
-          child: Icon(Icons.play_arrow),
+          child: Icon(Icons.play_arrow,size : 10.0),
         );
       }
       if(selectedAs.value == "end"){
         return Container(
-          child: Center(child: Icon(Icons.stop)),
+          child:  Icon(Icons.stop,size : 10.0 ),
         );
       }
       if(selectedAs.value == "currVisted"){
@@ -95,31 +95,31 @@ class CellController{
       if(selectedAs.value == "in-path"){
       return Container(
         // color: Colors.black,
-      child: Icon(Icons.send),
+      child: Icon(Icons.send,size: 10.0,),
         );
       }
       if(selectedAs.value == "in-path-down"){
       return Container(
         // color: Colors.black,
-      child: Icon(Icons.keyboard_arrow_down),
+      child: Icon(Icons.keyboard_arrow_down,size : 10),
         );
       }
       if(selectedAs.value == "in-path-up"){
       return Container(
         // color: Colors.black,
-      child: Icon(Icons.keyboard_arrow_up),
+      child: Icon(Icons.keyboard_arrow_up,size : 10),
         );
       }
       if(selectedAs.value == "in-path-right"){
       return Container(
         // color: Colors.black,
-      child: Icon(Icons.keyboard_arrow_right),
+      child: Icon(Icons.keyboard_arrow_right,size : 10),
         );
       }
       if(selectedAs.value == "in-path-left"){
       return Container(
         // color: Colors.black,
-      child: Icon(Icons.keyboard_arrow_left),
+      child: Icon(Icons.keyboard_arrow_left,size : 10),
         );
       }
   }

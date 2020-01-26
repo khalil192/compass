@@ -31,8 +31,8 @@ class HomeScreen extends StatefulWidget {
 }
   
 class _HomeScreenState extends State<HomeScreen> {
-  static int perRow = 40;
-  static int numCells = 800;
+  static int perRow = 70;
+  static int numCells = 2100;
   ValueController valueController =  ValueController(numCells,perRow);
    void solveMaze(){
     MazeSolver mazeSolver  = new MazeSolver(valueController);
@@ -230,8 +230,8 @@ final Set<int> selectedIndexes = Set<int>();
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: widget.valueController.perRow, // change this value
             childAspectRatio: 1.0,
-            crossAxisSpacing: 5.0,
-            mainAxisSpacing: 5.0,
+            crossAxisSpacing: 1.0,
+            mainAxisSpacing: 1.0,
           ),
           itemBuilder: (context, index) {
             return Foo(
@@ -375,14 +375,14 @@ class _CellState extends State<Cell> {
             valueListenable: widget.cellController.selectedAs,
             builder: (context, selectedAs, child){
                 return AnimatedContainer(
-                  duration: Duration(milliseconds: 50),
+                  duration: Duration(milliseconds: 10),
                   width: cellLength,
                   height: cellLength,
                   decoration: BoxDecoration(
                  border: Border.all(color: Colors.blue[200]),
                   color: getColor(widget.cellController.selectedAs.value), 
                    ),
-                  child: widget.cellController.getWidget(),
+                  child: Center(child: widget.cellController.getWidget()),
                 );
             },
           ),
