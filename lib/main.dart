@@ -11,7 +11,6 @@ void main() => runApp(MyApp());
 String searchMethod = "Depth First Search";
 
 String currentSelection = "block";
-
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context){
@@ -24,15 +23,15 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
+// ValueController valueController;
 class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
   
 class _HomeScreenState extends State<HomeScreen> {
-  static int perRow = 70;
-  static int numCells = 2100;
+  static int perRow = 30;
+  static int numCells = 900;
   ValueController valueController =  ValueController(numCells,perRow);
    void solveMaze(){
     MazeSolver mazeSolver  = new MazeSolver(valueController);
@@ -58,6 +57,35 @@ class _HomeScreenState extends State<HomeScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      Container(
+                        
+                        child: Text("size of grid"),),
+                      SliderTheme(
+                        data:SliderTheme.of(context).copyWith(
+                          activeTrackColor: Colors.black,
+                          inactiveTrackColor:Colors.grey,
+                          thumbColor: Colors.black,
+                          thumbShape: RoundSliderThumbShape(enabledThumbRadius: 8.0),
+                        ),
+                        child: Slider(
+                              min: 20.0,
+                              max: 70,
+                              value: perRow.toDouble(),
+                                  onChanged: (newRating){
+                                    setState(() {
+                                      perRow = newRating.toInt();
+                                      numCells = perRow * 30; 
+                                      valueController = new ValueController(numCells, perRow);
+                                    });
+                                },
+                          ),
+                      ),
+                    ],
+                  ),
                   RaisedButton(
                     shape: RoundedRectangleBorder(
                       borderRadius: new BorderRadius.circular(10.0),
@@ -68,6 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                       child: Text("create Maze"),
                   ),
+                  SizedBox(width: 10,),
                   RaisedButton(
                     shape: RoundedRectangleBorder(
                       borderRadius: new BorderRadius.circular(10.0),
