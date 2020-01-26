@@ -38950,7 +38950,7 @@ F.ot.prototype={
 av:function(){return new F.LS(Y.QX($.R3,$.M3),C.l)}}
 F.LS.prototype={
 K6:function(){this.aG(new F.M2(this))},
-J:function(a){var u,t,s,r,q,p,o,n,m=this,l=null,k=L.eR("path finder",l),j=[N.aX],i=T.WN(H.b([M.aU(l,L.eR("size of grid",l),l,l,l,l,l,l,l,l,l),new Q.qk(Q.Tm(a).KA(C.m,C.r7,C.m,new Q.q_(8)),new R.qj($.M3,new F.LV(m),20,70,l),l)],j),C.dR,C.kh,C.hX),h=new P.ak(10,10)
+J:function(a){var u,t,s,r,q,p,o,n,m=this,l=null,k=L.eR("path finder",l),j=[N.aX],i=T.WN(H.b([M.aU(l,L.eR("size of grid",l),l,l,l,l,l,l,l,l,l),new Q.qk(Q.Tm(a).KA(C.m,C.r7,C.m,new Q.q_(8)),new R.qj($.M3,new F.LV(m),20,100,l),l)],j),C.dR,C.kh,C.hX),h=new P.ak(10,10)
 h=D.Em(L.eR("create Maze",l),new F.LW(m),new X.bg(new Y.ca(C.j,1,C.y),new K.aI(h,h,h,h)))
 u=new P.ak(10,10)
 u=D.Em(L.eR("clear all blocks",l),new F.LX(m),new X.bg(new Y.ca(C.j,1,C.y),new K.aI(u,u,u,u)))
