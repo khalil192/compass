@@ -62,7 +62,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
                       Container(
-                        
                         child: Text("size of grid"),),
                       SliderTheme(
                         data:SliderTheme.of(context).copyWith(
@@ -73,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         child: Slider(
                               min: 20.0,
-                              max: 70,
+                              max: 100,
                               value: perRow.toDouble(),
                                   onChanged: (newRating){
                                     setState(() {
