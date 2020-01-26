@@ -68,7 +68,7 @@ class RecursiveDivision{
     await drawVertical(mid+1 , right);
   }
   void doRecursiveDivide() async{ // x1,y1 is top left , x2,y2 is bottom right
-  recurseOnBox(0,numRow, 0,perRow);
+  recurseOnBox(0,numRow-1, 0,perRow-1);
   }
   void recurseOnBox(int r1 , int r2 , int c1,int c2) {
     //base condition....
